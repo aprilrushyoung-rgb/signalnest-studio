@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SignalNest Studio Demo</title>
+    <style>
+      :root {
+        --ink: #17242b;
+        --muted: #5f6f78;
+        --teal: #0f766e;
+        --teal-dark: #115e59;
+        --coral: #ef6f61;
+        --line: #d8e2e2;
+        --soft: #f4f8f7;
+        --panel: #ffffff;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        color: var(--ink);
+        background: #f7f9fb;
+        line-height: 1.55;
+      }
+
+      header {
+        background: #ffffff;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .nav {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 16px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 800;
+      }
+
+      .brand img {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+      }
+
+      main {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 36px 24px 64px;
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: 34px;
+        line-height: 1.2;
+      }
+
+      .lead {
+        color: var(--muted);
+        margin: 0 0 28px;
+        max-width: 780px;
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+        gap: 22px;
+      }
+
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 22px;
+      }
+
+      label {
+        display: block;
+        font-weight: 800;
+        margin-bottom: 8px;
+      }
+
+      input {
+        width: 100%;
+        border: 1px solid #b9c7c7;
+        border-radius: 6px;
+        padding: 12px;
+        font-size: 15px;
+      }
+
+      button {
+        width: 100%;
+        margin-top: 14px;
+        border: 0;
+        border-radius: 6px;
+        background: var(--teal);
+        color: #ffffff;
+        padding: 12px 14px;
+        font-weight: 800;
+        font-size: 15px;
+        cursor: pointer;
+      }
+
+      button.secondary {
+        background: #ffffff;
+        color: var(--teal-dark);
+        border: 1px solid var(--teal);
+      }
+
+      .hint {
+        color: var(--muted);
+        font-size: 14px;
+        margin-top: 12px;
+      }
+
+      .status {
+        display: none;
+        margin-top: 14px;
+        padding: 12px;
+        border-radius: 6px;
+        background: var(--soft);
+        color: var(--teal-dark);
+        font-weight: 700;
+      }
+
+      .metrics {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        margin-bottom: 18px;
+      }
+
+      .metric {
+        background: var(--soft);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 14px;
+      }
+
+      .metric strong {
+        display: block;
+        font-size: 26px;
+        line-height: 1.1;
+      }
+
+      .metric span {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #ffffff;
+      }
+
+      th, td {
+        border-bottom: 1px solid var(--line);
+        padding: 12px 10px;
+        text-align: left;
+        vertical-align: top;
+        font-size: 14px;
+      }
+
+      th {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .tag {
+        display: inline-block;
+        border-radius: 999px;
+        padding: 4px 8px;
+        background: #e8f4f2;
+        color: var(--teal-dark);
+        font-weight: 700;
+        font-size: 12px;
+      }
+
+      .summary {
+        display: none;
+        margin-top: 18px;
+      }
+
+      .summary ul {
+        margin: 10px 0 0;
+        padding-left: 20px;
+      }
+
+      @media (max-width: 820px) {
+        .layout,
+        .metrics {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="nav">
+        <div class="brand">
+          <img src="./signalnest_app_icon_1024.png" alt="SignalNest Studio logo">
+          <span>SignalNest Studio</span>
+        </div>
+        <span class="hint">Demo workflow for TikTok Developer review</span>
+      </div>
+    </header>
+
+    <main>
+      <h1>TikTok Comment Research Demo</h1>
+      <p class="lead">
+        This demo shows the intended end-to-end flow for using authorized TikTok developer capabilities to retrieve public video comments and organize them into aggregated consumer demand signals.
+      </p>
+
+      <div class="layout">
+        <section class="card">
+          <label for="videoId">TikTok video_id</label>
+          <input id="videoId" value="7350000000000000000" aria-label="TikTok video ID">
+          <button id="fetchBtn">Fetch Public Comments</button>
+          <button class="secondary" id="exportBtn">Export CSV</button>
+          <p class="hint">
+            Production endpoint: TikTok Research API comment list. Demo data is shown here to illustrate the app flow for review.
+          </p>
+          <div class="status" id="statusBox">Fetching comments from TikTok Research API...</div>
+        </section>
+
+        <section class="card">
+          <div class="metrics">
+            <div class="metric">
+              <strong id="commentCount">0</strong>
+              <span>public comments</span>
+            </div>
+            <div class="metric">
+              <strong id="signalCount">0</strong>
+              <span>qualified signals</span>
+            </div>
+            <div class="metric">
+              <strong id="clusterCount">0</strong>
+              <span>pain clusters</span>
+            </div>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Raw public comment</th>
+                <th>Signal type</th>
+                <th>Pain phrase</th>
+              </tr>
+            </thead>
+            <tbody id="commentRows">
+              <tr>
+                <td colspan="3">Click Fetch Public Comments to load sample research data.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="summary" id="summaryBox">
+            <h2>Aggregated Research Summary</h2>
+            <ul>
+              <li>Repeated complaint: users want practical solutions that actually work for daily routines.</li>
+              <li>Common signal types: recommendation requests, failed alternatives, and product-gap complaints.</li>
+              <li>Next step: validate repeated pain clusters across Reddit, YouTube, and commerce reviews.</li>
+            </ul>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <script>
+      const sampleComments = [
+        {
+          text: "I have tried so many products and nothing works for this. Does anyone have recommendations?",
+          signal: "recommendation_request",
+          pain: "nothing works"
+        },
+        {
+          text: "This is exactly the problem I have every morning before work. I need something simple.",
+          signal: "organic_user_complaint",
+          pain: "daily routine friction"
+        },
+        {
+          text: "I bought a similar product and returned it because it was too hard to use.",
+          signal: "existing_product_complaint",
+          pain: "hard to use"
+        },
+        {
+          text: "I use a DIY workaround right now, but it is messy and takes too long.",
+          signal: "workaround",
+          pain: "messy workaround"
+        }
+      ];
+
+      const rows = document.getElementById("commentRows");
+      const statusBox = document.getElementById("statusBox");
+      const summaryBox = document.getElementById("summaryBox");
+
+      document.getElementById("fetchBtn").addEventListener("click", () => {
+        statusBox.style.display = "block";
+        statusBox.textContent = "Fetching comments from TikTok Research API...";
+
+        setTimeout(() => {
+          rows.innerHTML = sampleComments.map(comment => `
+            <tr>
+              <td>${comment.text}</td>
+              <td><span class="tag">${comment.signal}</span></td>
+              <td>${comment.pain}</td>
+            </tr>
+          `).join("");
+
+          document.getElementById("commentCount").textContent = sampleComments.length;
+          document.getElementById("signalCount").textContent = sampleComments.length;
+          document.getElementById("clusterCount").textContent = 3;
+          statusBox.textContent = "Comments loaded and organized into research signals.";
+          summaryBox.style.display = "block";
+        }, 900);
+      });
+
+      document.getElementById("exportBtn").addEventListener("click", () => {
+        const csv = [
+          "platform,source_type,raw_text,signal_type,pain_phrase",
+          ...sampleComments.map(comment => `TikTok,comment,"${comment.text}",${comment.signal},"${comment.pain}"`)
+        ].join("\n");
+        const blob = new Blob([csv], { type: "text/csv" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "signalnest_tiktok_comment_signals.csv";
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+    </script>
+  </body>
+</html>
